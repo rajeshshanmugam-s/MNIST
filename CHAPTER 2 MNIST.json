@@ -1,0 +1,561 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Using TensorFlow backend.\n"
+     ]
+    }
+   ],
+   "source": [
+    "from keras.datasets import mnist"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "(train_imgaes, train_labels), (test_images, test_labels) = mnist.load_data()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       ...,\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]]], dtype=uint8)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "train_imgaes\n",
+    "# Images are encoded in numpy arrays "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([5, 0, 4, ..., 5, 6, 8], dtype=uint8)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "train_labels"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       ...,\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]],\n",
+       "\n",
+       "       [[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]]], dtype=uint8)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "test_images"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([7, 2, 1, ..., 4, 5, 6], dtype=uint8)"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "test_labels"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(60000, 28, 28)"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "train_imgaes.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "60000"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "len(train_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# So there are 60000 labels and 60000 Images in trainning "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(10000, 28, 28)"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "test_images.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "10000"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "len(test_labels)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> First train images and the train labels are feed into neural networks, so it learn from images and the associated labels. Then it will predict for test_images, we will check test_labels and the predicted_lables are matching. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from keras import models"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from keras import layers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "network = models.Sequential()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "WARNING:tensorflow:From /home/rajesh/.local/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.\n",
+      "Instructions for updating:\n",
+      "If using Keras pass *_constraint arguments to layers.\n"
+     ]
+    }
+   ],
+   "source": [
+    "network.add(layers.Dense(512, activation='relu', input_shape=(28*28,)))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "network.add(layers.Dense(10, activation='softmax'))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> Our Network consists of two sequential layers which are densely connected, fully connected. And the second layer 10 way softmax layer, Which outputs array of 10 probilistic socres for our 10 digit labels "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compilation part\n",
+    "network.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Need to preprocess the data \n",
+    "# TODO: Add more points claiming why we need this\n",
+    "train_images = train_imgaes.reshape((60000, 28*28))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "train_images = train_images.astype('float32')/255"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "test_images = test_images.reshape(10000, 28*28,)\n",
+    "test_images = test_images.astype('float32')/255"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Categorically encode the labels \n",
+    "from keras.utils import to_categorical"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "train_labels = to_categorical(train_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "test_labels = to_categorical(test_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Train the network "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "WARNING:tensorflow:From /home/rajesh/.local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:422: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.\n",
+      "\n",
+      "Epoch 1/5\n",
+      "60000/60000 [==============================] - 2s 39us/step - loss: 0.2586 - accuracy: 0.9250\n",
+      "Epoch 2/5\n",
+      "60000/60000 [==============================] - 2s 36us/step - loss: 0.1055 - accuracy: 0.9688\n",
+      "Epoch 3/5\n",
+      "60000/60000 [==============================] - 2s 35us/step - loss: 0.0701 - accuracy: 0.9791\n",
+      "Epoch 4/5\n",
+      "60000/60000 [==============================] - 2s 36us/step - loss: 0.0505 - accuracy: 0.9846\n",
+      "Epoch 5/5\n",
+      "60000/60000 [==============================] - 2s 37us/step - loss: 0.0389 - accuracy: 0.9883\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<keras.callbacks.callbacks.History at 0x7fe7316d58d0>"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "network.fit(train_images, train_labels, epochs=5, batch_size=128)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Training Accuaracy 98.9%"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "10000/10000 [==============================] - 0s 29us/step\n"
+     ]
+    }
+   ],
+   "source": [
+    "test_loss, test_acc = network.evaluate(test_images, test_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9786999821662903"
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "test_acc"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> The difference between the training and the testing accuracy is an example of overfitting "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
